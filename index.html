@@ -7,37 +7,56 @@
 <title>Steve's Pizza Restaurant</title>
 <link rel="stylesheet"  href="data/jquery.mobile-1.04.min.css" />
 <link rel="stylesheet" href="data/mobile.css" />
+<link rel="stylesheet" href="data/slider_banner.css" />
 <link rel="stylesheet" href="data/photoswipe.css" />
+<link rel="stylesheet" href="data/font_style.css" />
 <script type="text/javascript" src="data/klass.min.js"></script>
 <script type="text/javascript" src="data/jquery-1.6.4.min.js"></script>
 <script type="text/javascript" src="data/jquery.mobile-1.04.min.js"></script>
 <script type="text/javascript" src="data/code.photoswipe.jquery-2.1.3.min.js"></script>
 <script type="text/javascript" src="data/mobile.js"></script>
+  <script>
+    // You can also use "$(window).load(function() {"
+    $(function () {
+
+      // Slideshow 4
+      $("#slider4").responsiveSlides({
+        auto: true,
+        pager: false,
+        nav: true,
+        speed: 500,
+        namespace: "callbacks"      		
+      });
+
+    });
+  </script>
 </head>
 <body id="bodyId">
 <div data-role="page" data-theme="b" id="typography">
-  <div data-role="header" data-theme="b" style="background:#272829 url(img/header-title.png) top repeat-x;">
-    
-	<div style="float:left; text-align:center; width:100%;"><h1 id="appTitle"></h1></div>	
-  
-		
-  </div>
-  
+  <div data-role="header" id="headerContId" data-theme="b" style="background:#272829 url(img/header-title.png) top repeat-x;"></div>
+  <div class="userTopMenu" id="userName"></div>
   <!-- /Header -->
-  <div data-role="content">
-	<a href="index.html" data-role="button" data-icon="refresh" data-theme="a" class="ui-rfloat ui-top" rel="external">Reload</a>
-		<div id="dealDivId"></div>
-    
-		<div class="ui-marg-cent" id="employeeList"></div>
-	    <!-- /button -->
+  <div data-role="content">	
+	<form>
+		<ul data-role="listview"  data-inset="true" data-theme="c">
+			<li><b>Restaurant Locations</b></li>
+			<li style="height:130px;"><div id="resLocationId" style="text-align:center;margin-top:50px;"></div></li>
+		</ul>
+		<a href="home.html" id="homeButtonId" data-role="button" data-theme="c" class="ui-top gra_but add_cart_txt" rel="external" >Go Home</a>
+	</form>
   </div>
+ 
   <!-- /Content -->
 
 </div>
-<!-- /Typography -->
-<script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>
+<!-- /Typography 
+<script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>-->
 <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+<script type="text/javascript" src="js/responsiveslides.min.js"></script>
+
 <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.0rc1.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/common.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/appconfig.js"></script>
 </body>
 </html>

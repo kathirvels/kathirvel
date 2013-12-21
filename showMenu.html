@@ -8,6 +8,7 @@
 <link rel="stylesheet"  href="data/jquery.mobile-1.04.min.css" />
 <link rel="stylesheet" href="data/mobile.css" />
 <link rel="stylesheet" href="data/photoswipe.css" />
+<link rel="stylesheet" href="data/font_style.css" />
 <script type="text/javascript" src="data/klass.min.js"></script>
 <script type="text/javascript" src="data/jquery-1.6.4.min.js"></script>
 <script type="text/javascript" src="data/jquery.mobile-1.04.min.js"></script>
@@ -17,18 +18,27 @@
 <body id="bodyId">
 <div data-role="page" data-theme="b" id="services">
 	<!-- /Header -->
-	<div data-role="header" data-theme="b" style="background:#272829 url(img/header-title.png) top repeat-x;">
-		<div style="float:left; text-align:center; width:100%;"><h1 id="appTitle"></h1></div>
-	  
-	</div>
+	<div data-role="header" id="headerContId" data-theme="b" style="background:#272829 url(img/header-title.png) top repeat-x;"></div>
+	<div class="userTopMenu" id="userName"></div>
+    
+    <!--<ul><li>Guest <span style="margin-right:20px;color:#ff0000">User</span></li><li><span><a href="checkout.html" id="cartBtnId" rel="external" style="margin-right:10px; color:#fff;">Cart <span style="color:#ff0000">['+cartCount+']</span></a></span></li><li><span ><a href="#" id="logoutBtnId" rel="external" style="color:#fff">Login</a></span></li></ul>-->
+    
 	<!-- /Header -->
-
+	
 	<!-- /content start--> 
-	<div data-role="content"  >
-		<a href="index.html" data-role="button" data-icon="back" data-theme="a" class="ui-rfloat ui-top" rel="external">Back</a>
-		<a href="showMenu.html" data-role="button" data-icon="refresh" data-theme="a" class="ui-rfloat ui-top" rel="external">Reload</a>		
+	<div data-role="content" class="item-detail">
+		<h2 class="menu-head" id="menulist"></h2>
+		<ul id="employeeList" data-role="listview"  data-inset="true" data-theme="c" ></ul>
 		
-		<ul id="employeeList" data-role="listview"  data-inset="true" data-theme="c" style="margin-top:100px"></ul>
+		<div id="itemDetList"></div>
+		<!--<span id="itemDetAlert" class="clearfix" ></span>
+		<ul id="dealItemList" data-role="listview"  data-inset="true" data-theme="c" ></ul>-->
+		
+		<a href="#" id="addCartButtonId" data-role="button"  data-theme="c" class="ui-top gra_but add_cart_txt" >Add to cart</a>
+		
+        <a href="#" id="checkOutButtonId" data-role="button"  data-theme="c" class="ui-rfloat ui-top gra_but" rel="external"><i class="checkout_ic"></i>Checkout</a>
+        <a href="#" id="addMoreItemButtonId" data-role="button"  data-theme="c" class="ui-lfloat ui-top gra_but" onClick="goPrevious()"><i class="add_moreit"></i>Add More Items</a>
+		
 		
 	</div>
 	
@@ -36,9 +46,10 @@
 	<!-- /content end--> 
 </div>
 
-<script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>
+<!--<script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>-->
 <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.0rc1.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/common.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/showMenu.js"></script>
 </body>
 </html>

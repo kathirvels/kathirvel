@@ -3,13 +3,13 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.phonegap.steve-pizza-restaurant"
+        id        = "com.phonegap.Imagine-pizza-restaurant"
         version   = "1.0.0">
 
-    <name>Steve's Pizza Restaurant</name>
+    <name>Imagine Pizza Restaurant</name>
 
     <description>
-       Steve's Pizza Restaurant
+       Imagine Pizza Restaurant
     </description>
 
     <author href="http://phonegap.com" email="support@advantixtech.com.au">
