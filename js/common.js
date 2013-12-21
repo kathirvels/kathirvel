@@ -46,13 +46,14 @@ var welcomeDiv = window.localStorage.getItem('welcomeDiv');
 
 if(userDataval!=null) {
 	var userData = JSON.parse(userDataval);
-	var carDataGetcnt = JSON.parse(window.localStorage.getItem('carDatas'));
-	var carDataGetDealCnt = JSON.parse(window.localStorage.getItem('dealItemsId'));
+	var carDataGetcntval = window.localStorage.getItem('carDatas');
+	var carDataGetDealCnt = window.localStorage.getItem('dealItemsId');
 	
 	
 	if(carDataGetDealCnt!=null) {
 		cartCount = 1;
-	} else if(carDataGetcnt!=null) {
+	} else if(carDataGetcntval!=null) {
+		var carDataGetcnt = JSON.parse(carDataGetcntval);
 		var cartItemCntView=carDataGetcnt.items.length;
 		cartCount = cartItemCntView;
 	} else {
