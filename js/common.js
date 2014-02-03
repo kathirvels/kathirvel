@@ -1,16 +1,16 @@
-var itemImgURL = "http://advantixcrm.com/prj/mitech/images/item/";
+var itemImgURL = "http://rayinfos.com/proj/app/images/item/";
 var defaultImgURL = "logo_miapps.png";
-var serviceAppURL = "http://advantixcrm.com/prj/mitech/index.php/api/appconfig/Mw";
+var serviceAppURL = "http://rayinfos.com/proj/app/index.php/api/appconfig/Mw";
 var resDatavl = window.localStorage.getItem('RestInfoDet');//alert(resDatavl);
 if(resDatavl!=null) {	
 	var resData = JSON.parse(resDatavl);
 	restId = resData.id;
 	menuId = resData.menu;
 	//alert(menuId);
-	var serviceMenuURL = "http://advantixcrm.com/prj/mitech/index.php/api/catlist/Mw/"+restId+"/"+menuId;
+	var serviceMenuURL = "http://rayinfos.com/proj/app/index.php/api/catlist/Mw/"+restId+"/"+menuId;
 }
 var store_id= 'Mw';
-var serviceURL = "http://advantixcrm.com/prj/mitech/index.php/api/";
+var serviceURL = "http://rayinfos.com/proj/app/index.php/api/";
 
 var dataAppConfigval = window.localStorage.getItem('configData');
 if(dataAppConfigval==null) {
