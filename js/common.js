@@ -1,45 +1,77 @@
-var itemImgURL = "http://rayinfos.com/proj/app/images/item/";
+var itemImgURL = "http://advantixcrm.com/prj/mitech/images/item/";
 var defaultImgURL = "logo_miapps.png";
-var serviceAppURL = "http://rayinfos.com/proj/app/index.php/api/appconfig/Mw";
+var serviceAppURL = "http://advantixcrm.com/prj/mitech/index.php/api/appconfig/Mw";
+
+var store_id= 'Mw';
+var serviceURL = "http://advantixcrm.com/prj/mitech/index.php/api/";
+
 var resDatavl = window.localStorage.getItem('RestInfoDet');//alert(resDatavl);
 if(resDatavl!=null) {	
 	var resData = JSON.parse(resDatavl);
 	restId = resData.id;
-	menuId = resData.menu;
-	//alert(menuId);
-	var serviceMenuURL = "http://rayinfos.com/proj/app/index.php/api/catlist/Mw/"+restId+"/"+menuId;
+	tabId=getUrlVars()["tabId"];	
+	if(tabId!=null) {
+		menuId = tabId ;
+	} else {
+		//var dataAppConfig = window.localStorage.getItem('tabIdSess');
+		getMenuTabDefId();
+		menuId = window.localStorage.getItem('tabIdSess');
+	}
+	
+	//alert(menuId+":"+restId);
+	var serviceMenuURL = "http://advantixcrm.com/prj/mitech/index.php/api/catlist/Mw/"+restId+"/"+menuId;
 }
-var store_id= 'Mw';
-var serviceURL = "http://rayinfos.com/proj/app/index.php/api/";
 
 var dataAppConfigval = window.localStorage.getItem('configData');
 if(dataAppConfigval==null) {
-	
+	//alert('null');
 	$.getJSON(serviceAppURL, function(data) {
 		window.localStorage.setItem('configData',JSON.stringify(data)); // store local storage	
 		var dataAppConfigval = window.localStorage.getItem('configData');
-		var dataAppConfig = JSON.parse(dataAppConfigval);		
+		var dataAppConfig = JSON.parse(dataAppConfigval);	
 		history.go(0);
 	});
 }
 
 if(dataAppConfigval!=null) {	
 	var dataAppConfig = JSON.parse(dataAppConfigval);
-	$("#bodyId").css("background-image", "url("+dataAppConfig.AppConfig.bg_image+")");
+	
+	/*$("#bodyId").css("background-image", "url("+dataAppConfig.AppConfig.bg_image+")");
 	$("#bodyId").css("background-repeat", "repeat-x");
 	$("#bodyId").css("background-position", "top");
-	$("#bodyId").css("background-color", "#000");
+	$("#bodyId").css("background-color", "#000");*/
+	$(document).ready(function() {
+        document.title = dataAppConfig.AppConfig.store_name;
+		headerHtml(dataAppConfig.AppConfig.store_name);
+    });
 	file_name=get_path_filename();
-	htmlData='<div style="float:left; text-align:center; padding-bottom: 8px; width:100%;"><div  class="clearfix head-top"><div class="head-img"><img src="'+dataAppConfig.AppConfig.store_logo+'" alt=""></div> <h1 class="head-span">'+dataAppConfig.AppConfig.store_name+'</h1></div></div><div class="ui-ltop-icon">';
-	if(file_name=='index.html') { 
-		htmlData+='<a href="register.html" rel="external"><img src="img/singin-btn.png" alt=""></a>';
-	} else {
-		htmlData+='<a href="#" onclick="goPrevious();" rel="external"><img src="img/back_btn.png" alt=""></a>';
-	}
-	htmlData+='</div><div  class="ui-top-icon-right"> <a href="#"  onclick="refresh();" rel="external"><img src="img/refresh-btn.png" alt=""></a></div>';
-	$('#headerContId').html(htmlData);
+	
+	
 } 
 
+
+function getMenuTabDefId() {
+	$.getJSON(serviceURL+'tab/'+store_id+'/'+restId, function(data) {	
+		var tabs = data.TabInfo;
+		//alert(tabs);
+		if(tabs[0]!=null) {
+			var tabIdVal = tabs[0]['cat_id'];
+			
+		} else {
+			var tabIdVal = 0;
+		}
+		window.localStorage.setItem('tabIdSess',tabIdVal); 	
+	});
+	
+}
+
+function headerHtml(titVal) {
+	htmlData='<a href="../toolbar/" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-back">Back</a>';
+	htmlData+='<a href="#" data-rel="refresh" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-refresh" onclick="refresh();">Refresh</a>';
+    htmlData+='<h1 class="ui-title" role="heading" aria-level="1">'+titVal+'</h1>';
+
+	$('#headerContId').html(htmlData);
+}
 var userDataval = window.localStorage.getItem('userData');
 
 var welcomeDiv = window.localStorage.getItem('welcomeDiv');
@@ -52,7 +84,7 @@ if(userDataval!=null) {
 	
 	if(carDataGetDealCnt!=null) {
 		cartCount = 1;
-	} else if(carDataGetcntval!=null) {
+	} else if(carDataGetcnt!=null) {
 		var carDataGetcnt = JSON.parse(carDataGetcntval);
 		var cartItemCntView=carDataGetcnt.items.length;
 		cartCount = cartItemCntView;
@@ -71,7 +103,7 @@ if(userDataval!=null) {
 	
 	if(carDataGetDealCnt!=null) {
 		cartCount = 1;
-	} else if(carDataGetcntval!=null) {
+	} else if(carDataGetcnt!=null) {
 		var carDataGetcnt = JSON.parse(carDataGetcntval);
 		var cartItemCntView=carDataGetcnt.items.length;
 		cartCount = cartItemCntView;
@@ -85,7 +117,9 @@ if(userDataval!=null) {
 	
 }
 
-$("#logoutBtnId").click(function() {
+//$("#logoutBtnId").click(function() {
+function logout() {
+	//alert("dsf");
 	window.localStorage.removeItem('userData');
 	$("#loginFrmId").show();
 	$("#registerFrmId").hide();	
@@ -94,7 +128,8 @@ $("#logoutBtnId").click(function() {
 	window.localStorage.setItem('form_active','#loginFrmId'); // store local storage
 	//window.localStorage.setItem('form_inactive','#registerFrmId'); // store local storage
 	window.location.href='register.html';
-});
+}
+//});
 
 
 function checkConnection() {

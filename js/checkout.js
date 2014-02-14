@@ -1,11 +1,11 @@
 if(dataAppConfig==null) {
 	window.location.href='index.html';
 }
-$('#services').bind('pageinit', function(event) {
+//$('#services').bind('pageinit', function(event) {
 	//if(checkConnection()) {
 		getCartList();
 	//}
-});
+//});
 
 var dealId = window.localStorage.getItem('deal_id');
 
@@ -58,8 +58,7 @@ function getCartList() {
 		htmlData+='</div><hr></hr>';
 		
 		var holidaypercntval = window.localStorage.getItem('holidaypercnt');
-		//alert(holidaypercntval);
-		if(holidaypercntval!=null && holidaypercntval!='""'){
+		if(holidaypercntval!=null && holidaypercntval!=""){
 			var holidaypercnt = JSON.parse(holidaypercntval);
 			percentageval = ((priceSubTotal/100)*holidaypercnt).toFixed(1);
 			htmlData+='<div  class="checkout-grid clearfix"  >';
@@ -235,7 +234,7 @@ $("#pickupnow").click(function() {
 
 $("#pickupTimeSelector").click(function() {
 	var ordertypeval = window.localStorage.getItem('takeordelivry');	
-	if(ordertypeval != null){	
+	if(ordertypeval != null){
 		window.location.href='working_hours.html';
 	}else{
 		//alert('Please Select Delivery or Takeaway!');
@@ -326,7 +325,7 @@ $('#itemCheckOutFrm').submit(function(){
 	//var postData = $(this).serialize();
 	var hoursinfoval = window.localStorage.getItem('hoursinfo');
 	//alert(hoursinfoCheck);
-	if(hoursinfoval!=null) {
+	if(hoursinfoval!=null) {	
 		var hoursinfo = JSON.parse(hoursinfoval);
 		grossTotal =$('#gross_total').val();
 		var minorderCheck = JSON.parse(window.localStorage.getItem('minorderamt'));	

@@ -1,4 +1,4 @@
-if(dataAppConfigval==null) {
+if(dataAppConfig==null) {
 	window.location.href='index.html';
 }
 $("#loginBtnId").click(function() {

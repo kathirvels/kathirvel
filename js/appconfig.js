@@ -1,17 +1,15 @@
-$('#typography').live('pageshow', function(event) {	
+//$('#typography').live('pageshow', function(event) {	
 	//if(checkConnection()) {
 		getAppConfig();
 	//}
-});
+//});
 
 $.ajaxSetup({ cache: false });
 function getAppConfig() {
 		data= window.localStorage.getItem('configData'); 
 		//window.localStorage.setItem('configData',JSON.stringify(data)); // store local storage		
-		if(data!==null) {
+		if(data!==null) {	
 			var data = JSON.parse(data);
-			//alert(data.AppConfig.store_name);
-			$('#appTitle').text(data.AppConfig.store_name);
 			$("#bodyId").css("background-image", "url("+data.AppConfig.bg_image+")");
 			$("#bodyId").css("background-repeat", "repeat-x");
 			$("#bodyId").css("background-position", "top");
