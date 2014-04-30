@@ -1,17 +1,18 @@
-var itemImgURL = "http://advantixcrm.com/prj/mitech/images/item/";
+var itemImgURL = "http://findmyfood.in/clients/images/item/";
 var defaultImgURL = "logo_miapps.png";
-var serviceAppURL = "http://advantixcrm.com/prj/mitech/index.php/api/appconfig/Mw";
+var serviceAppURL = "http://findmyfood.in/clients/index.php/api/appconfig/Mw";
 
 var store_id= 'Mw';
-var serviceURL = "http://advantixcrm.com/prj/mitech/index.php/api/";
+var serviceURL = "http://findmyfood.in/clients/index.php/api/";
 
 var resDatavl = window.localStorage.getItem('RestInfoDet');//alert(resDatavl);
+var restId;
 if(resDatavl!=null) {	
 	var resData = JSON.parse(resDatavl);
 	restId = resData.id;
 	tabId=getUrlVars()["tabId"];	
 	if(tabId!=null) {
-		menuId = tabId ;
+		menuId = tabId;
 	} else {
 		//var dataAppConfig = window.localStorage.getItem('tabIdSess');
 		getMenuTabDefId();
@@ -19,7 +20,7 @@ if(resDatavl!=null) {
 	}
 	
 	//alert(menuId+":"+restId);
-	var serviceMenuURL = "http://advantixcrm.com/prj/mitech/index.php/api/catlist/Mw/"+restId+"/"+menuId;
+	var serviceMenuURL = "http://findmyfood.in/clients/index.php/api/catlist/Mw/"+restId+"/"+menuId;
 }
 
 var dataAppConfigval = window.localStorage.getItem('configData');
@@ -36,41 +37,53 @@ if(dataAppConfigval==null) {
 if(dataAppConfigval!=null) {	
 	var dataAppConfig = JSON.parse(dataAppConfigval);
 	
-	/*$("#bodyId").css("background-image", "url("+dataAppConfig.AppConfig.bg_image+")");
-	$("#bodyId").css("background-repeat", "repeat-x");
+	$("#bodyId").css("background-image", "url("+dataAppConfig.AppConfig.bg_image+")");
+	$("#bodyId").css("background-repeat", "repeat");
 	$("#bodyId").css("background-position", "top");
-	$("#bodyId").css("background-color", "#000");*/
+	$("#bodyId").css("background-color", "#fff");
 	$(document).ready(function() {
         document.title = dataAppConfig.AppConfig.store_name;
-		headerHtml(dataAppConfig.AppConfig.store_name);
+		
     });
 	file_name=get_path_filename();
 	
 	
 } 
 
-
 function getMenuTabDefId() {
-	$.getJSON(serviceURL+'tab/'+store_id+'/'+restId, function(data) {	
-		var tabs = data.TabInfo;
+	$.getJSON(serviceURL+'home/'+restId, function(data) {	
+		var dealMenuDeal=data.DefaultMenu;
 		//alert(tabs);
-		if(tabs[0]!=null) {
-			var tabIdVal = tabs[0]['cat_id'];
+		if(dealMenuDeal!=null) {
+			var tabIdVal = dealMenuDeal.id;
 			
 		} else {
 			var tabIdVal = 0;
 		}
+		window.localStorage.setItem('homeDash',JSON.stringify(data)); 	
 		window.localStorage.setItem('tabIdSess',tabIdVal); 	
 	});
 	
 }
 
 function headerHtml(titVal) {
-	htmlData='<a href="../toolbar/" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-back">Back</a>';
-	htmlData+='<a href="#" data-rel="refresh" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-refresh" onclick="refresh();">Refresh</a>';
-    htmlData+='<h1 class="ui-title" role="heading" aria-level="1">'+titVal+'</h1>';
+	$(document).ready(function() {
+		//alert(titVal);
+		if(file_name!='index.html') {
+		htmlData='<a href="../toolbar/" data-rel="back" class="ui-btn-left ui-alt-icon"><img src="images/arrow-back.png" alt=""></a>';
+		} else {
+			htmlData='';
+		}
+		htmlData+='<a href="#" class="ui-btn-right ui-alt-icon" onclick="refresh();"><img src="images/arrow-refresh.png" alt=""></a>';
+		if(titVal!="") {
+			htmlData+='<h1 class="ui-title header_titletext" role="heading" aria-level="1">'+titVal+'</h1>';
+		} else {
+				
+			htmlData+='<h1 class="ui-title imagineLogo" role="heading" aria-level="1"><img src='+dataAppConfig.AppConfig.store_logo+' ></h1>';
+		}
 
-	$('#headerContId').html(htmlData);
+		$('#headerContId').html(htmlData);
+	});
 }
 var userDataval = window.localStorage.getItem('userData');
 
@@ -157,9 +170,11 @@ catId=getUrlVars()["catId"];
 itemId=getUrlVars()["itemId"];
 itemType=getUrlVars()["type"];
 orderId=getUrlVars()["orderId"];
+bokId=getUrlVars()["bokId"];
 delitemId=getUrlVars()["delitemId"];
 dealId=getUrlVars()["dealId"];
 chkitemid=getUrlVars()["chkitemid"];
+bokord=getUrlVars()["bokord"];//alert(bokord);
 
 
 
@@ -176,7 +191,8 @@ function refresh() { // used in showMenu.html
 		RestIndex = window.localStorage.getItem('RestInfoDetIndex');
 		//alert(RestIndex);
 		if(RestIndex!=null) {
-			window.localStorage.setItem('RestInfoDet',JSON.stringify(restDet.RestInfo[RestIndex])); 
+			window.localStorage.setItem('RestInfoDet',JSON.stringify(restDet.RestInfo[RestIndex]));
+			window.localStorage.removeItem('bookingDetailsArray');
 			// store local storage
 		}
 		history.go(0);
@@ -204,3 +220,93 @@ function get_path_filename() {
 function capitalize (text) {
     return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 }
+
+function parseDate(input) {
+  var parts = input.match(/(\d+)/g);
+  return new Date(parts[0], parts[1]-1, parts[2]);
+}
+function getDateFormat(dateGiven,type) {
+	
+	Date.prototype.myMet=function()
+	{
+	if (this.getMonth()==0){this.myProp="January"};
+	if (this.getMonth()==1){this.myProp="February"};
+	if (this.getMonth()==2){this.myProp="March"};
+	if (this.getMonth()==3){this.myProp="April"};
+	if (this.getMonth()==4){this.myProp="May"};
+	if (this.getMonth()==5){this.myProp="June"};
+	if (this.getMonth()==6){this.myProp="July"};
+	if (this.getMonth()==7){this.myProp="August"};
+	if (this.getMonth()==8){this.myProp="Spetember"};
+	if (this.getMonth()==9){this.myProp="October"};
+	if (this.getMonth()==10){this.myProp="November"};
+	if (this.getMonth()==11){this.myProp="December"};
+	}
+	
+	var weekday=new Array(7);
+	weekday[0]="Sunday";
+	weekday[1]="Monday";
+	weekday[2]="Tuesday";
+	weekday[3]="Wednesday";
+	weekday[4]="Thursday";
+	weekday[5]="Friday";
+	weekday[6]="Saturday";
+	//alert(dateGiven);
+	
+	dArr=dateGiven.split('-');
+	if(dArr[0]<2000) {
+		dateGiven=dArr[2]+'-'+(dArr[1]<10 ? '0'+dArr[1]: dArr[1])+'-'+(dArr[0]<10 ? '0'+dArr[0]: dArr[0]);
+	}
+	
+     // alert(dateGiven);
+	
+	var Datestring = new Date(parseDate(dateGiven));//alert(Datestring);
+	/*Datestring.myMet();
+	alert(Datestring.toLocaleFormat('%A, %d %B %Y'));
+	mon = Datestring.myProp;
+	var n = weekday[Datestring.getDay()];
+	da = Datestring.toString();
+	dArr=da.split(' ');*/
+	//return Datestring.toLocaleFormat('%A, %d %B %Y');
+	Datestring.myMet();
+	
+	var mon = Datestring.myProp;
+	var day = weekday[Datestring.getDay()];
+	var date = Datestring.getDate();
+	var year = Datestring.getFullYear();
+	//alert(day+" "+date+" "+ mon +" "+ year);
+	if(type=='date') {
+		return day+" "+date+" "+ mon +" "+ year;
+	} else {
+		return day.slice(0,3)+" "+date+" "+ mon +" "+ year;
+	}
+}
+
+
+// Footer controls starts
+
+if(resData!=null) {
+	buttonArray=resData.service_options;
+	buttonArray=buttonArray.split('-');
+} else {
+	var buttonArray= Array();
+	buttonArray[2]=0;
+}
+
+footHtml='<div data-role="footer" data-position="fixed" data-theme="b" class="footer_menu" >';
+footHtml+=' <div data-role="navbar" style="text-align:center;">';
+footHtml+=' <ul>';
+	footHtml+='<li><a href="index.html" rel="external"  ><div class="footer-icon"><img src="images/home.png" alt=""></div>Home</a></li>';
+	footHtml+='<li><a href="showMenu.html" rel="external" class="ui-btn-active"><div class="footer-icon"><img src="images/menus.png" alt=""></div>Menu</a></li>';
+	if(buttonArray[2]==1) {	
+		footHtml+='<li><a href="dinein.html" rel="external" ><div class="footer-icon"><img src="images/reser.png" alt=""></div>Reservations</a></li>';
+	} else {
+		footHtml+='<li><a href="#" rel="external"><div class="footer-icon"><img src="images/reser.png" alt=""></div>Reservations</a></li>';
+	}
+	footHtml+='<li><a href="myaccount.html" rel="external"  ><div class="footer-icon"><img src="images/info.png" alt=""></div>Info</a></li>';
+footHtml+='</div>';
+		
+
+$('#footerDiv').html(footHtml);
+
+// Footer controls ends

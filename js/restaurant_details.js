@@ -3,92 +3,103 @@ if(dataAppConfig==null || resData==null) {
 }
 
 // Address box
-htmlData='<h2 class="itemp">'+resData.restaurant_name+'</h2>';  
-htmlData+='<h4 class="itemp">'+resData.address_line1+', '+resData.address_line2+', <br> '+resData.suburb+',<br> '+resData.state+' <br> '+resData.postcode+', <br> PH: '+resData.phone+', </h4>'; 
-
+htmlData='<h2>'+resData.restaurant_name+' Restaurant</h2>'; 
+htmlData+='<p>The best fine dining and pizza restaurant in the Illawarra. An experience of real fine food.</p>'; 
+htmlData+='<div class="res_location"><img src="images/location.jpg"  style="margin-top:10px;" alt=""></div>';
+htmlData+='<div class="clearfix infowarps">';
+htmlData+='<div class="row_div"><h2>Location</h2></div>';
+htmlData+='<div class="row_div"><label>Address </label>';
+htmlData+='<p class="info_right">';
+htmlData+=resData.address_line1+'<br> '+(resData.address_line2!="" ? resData.address_line2+'<br>' :"")+resData.suburb+'<br> '+resData.state+' <br> '+resData.postcode; 
+htmlData+='</p></div>';
+htmlData+='<div class="row_div"><label>Phone </label>  ';           
+           htmlData+='<p class="info_right"> '+resData.phone+'</p> <a href="map.html" rel="external"  class="ui-btn">View Map</a></div> ';
+htmlData+='</div>';
 $('#addressDiv').html(htmlData);
 	
 
-// Map box
-
-	// JSON
-	var data = JSON.parse('[{"address":"'+resData.address_line1+', '+resData.address_line2+', '+resData.suburb+', '+resData.state+' , '+resData.postcode+'","content":"'+resData.restaurant_name+' ('+resData.restaurant_location+'), '+resData.address_line1+', '+resData.address_line2+', '+resData.suburb+', '+resData.state+' , '+resData.postcode+'","status":"live"}]');
-
-	var $map = $('.gmap');
-	
-
-	// Json Loop
-	$.each(data, function(key, val) {
-		$map.gmap3({
-			marker:{
-				values:[{
-					address:val.address,
-					events: {
-						click: function(marker, event, context) {
-
-							gmap_clear_markers();
-							
-							 $map.gmap3({
-								map:{
-								  options:{
-									center:event.latLng,
-									zoom: 10
-								  }
-								}
-							 });                        
-
-							$(this).gmap3({
-								overlay:{
-									address:val.address,
-									options:{
-										content:  '<div class="infobox">'+val.content+'</div>',
-										offset:{
-											y:-10,
-											x:-(val.content.length*3)
-										}
-									}
-								}
-							});
-						}
-					}
-				}]
-			}
-		});
-	});
-
-	// Function Clear Markers
-	function gmap_clear_markers() {
-		$('.infobox').each(function() {
-			$(this).remove();
-		});
-	}
-
-
+//alert(resData.sitting_status);
+sitStaVa = resData.sitting_status;
+sittingStaArr = sitStaVa.split('-');
+sitVa = resData.sitting;
+sittingArr = sitVa.split('||');
 // Takeaway box
 
-htmlDataTakeAway='<p style="margin:0; padding:0;" ><strong>M</strong> - '+checkCloseDate(resData.takeaway_monday_start, resData.takeaway_monday_close,resData.takeaway_monday_na)+' </p><br>';
-htmlDataTakeAway+='<p style="margin:0; padding:0;"><strong>T </strong>- '+checkCloseDate(resData.takeaway_tuesday_start, resData.takeaway_tuesday_close,resData.takeaway_tuesday_na)+'</p><br>';
-htmlDataTakeAway+='<p style="margin:0; padding:0;"><strong>W</strong> - '+checkCloseDate(resData.takeaway_wednesday_start, resData.takeaway_wednesday_close,resData.takeaway_wednesday_na)+'</p><br>';
-htmlDataTakeAway+='<p style="margin:0; padding:0;"><strong>T</strong> - '+checkCloseDate(resData.takeaway_thursday_start, resData.takeaway_thursday_close,resData.takeaway_thursday_na)+'</p><br>';
-htmlDataTakeAway+='<p style="margin:0; padding:0;"><strong>F</strong> - '+checkCloseDate(resData.takeaway_friday_start, resData.takeaway_friday_close,resData.takeaway_friday_na)+'</p><br>';
-htmlDataTakeAway+='<p style="margin:0; padding:0;"><strong>S</strong> - '+checkCloseDate(resData.takeaway_saturday_start, resData.takeaway_saturday_close,resData.takeaway_saturday_na)+'</p><br>';
-htmlDataTakeAway+='<p style="margin:0; padding:0;"><strong>S</strong> - '+checkCloseDate(resData.takeaway_sunday_start, resData.takeaway_sunday_close,resData.takeaway_sunday_na)+'</p><br>';
-				
-$('#TakeAwayOpeningHoursDiv').html(htmlDataTakeAway);		
+//if(store_id!= 'Mw') {
 
+	if(sittingStaArr[0]==0) {
 
-// Delivery box
-htmlDatadelivery='<p style="margin:0; padding:0;" ><strong>M</strong> - '+checkCloseDate(resData.delivery_monday_start, resData.delivery_monday_close,resData.delivery_monday_na)+' </p><br>';
-htmlDatadelivery+='<p style="margin:0; padding:0;"><strong>T </strong>- '+checkCloseDate(resData.delivery_tuesday_start, resData.delivery_tuesday_close,resData.delivery_tuesday_na)+'</p><br>';
-htmlDatadelivery+='<p style="margin:0; padding:0;"><strong>W</strong> - '+checkCloseDate(resData.delivery_wednesday_start, resData.delivery_wednesday_close,resData.delivery_wednesday_na)+'</p><br>';
-htmlDatadelivery+='<p style="margin:0; padding:0;"><strong>T</strong> - '+checkCloseDate(resData.delivery_thursday_start, resData.delivery_thursday_close,resData.delivery_thursday_na)+'</p><br>';
-htmlDatadelivery+='<p style="margin:0; padding:0;"><strong>F</strong> - '+checkCloseDate(resData.delivery_friday_start, resData.delivery_friday_close,resData.delivery_friday_na)+'</p><br>';
-htmlDatadelivery+='<p style="margin:0; padding:0;"><strong>S</strong> - '+checkCloseDate(resData.delivery_saturday_start, resData.delivery_saturday_close,resData.delivery_saturday_na)+'</p><br>';
-htmlDatadelivery+='<p style="margin:0; padding:0;"><strong>S</strong> - '+checkCloseDate(resData.delivery_sunday_start, resData.delivery_sunday_close,resData.delivery_sunday_na)+'</p><br>';
-				
-$('#DeliveryOpeningHoursDiv').html(htmlDatadelivery);	
+	$('#bkfstId').html('<h2>Dinein Hours ('+sittingArr[0]+')</h2>');
 
-headerHtml('Restaurant Details');
+	htmlDataTakeAway='<div class="row_div"><label>Mon </label>   <p class="info_right"> '+checkCloseDate(resData.bk_monday_start, resData.bk_monday_end,resData.bk_monday_notallow)+' </p></div>';
+	htmlDataTakeAway+='<div class="row_div"><label>Tue </label>   <p class="info_right"> '+checkCloseDate(resData.bk_tuesday_start, resData.bk_tuesday_end,resData.bk_tuesday_notallow)+'</p></div>';
+	htmlDataTakeAway+='<div class="row_div"><label>Wed</label>   <p class="info_right"> '+checkCloseDate(resData.bk_wednesday_start, resData.bk_wednesday_end,resData.bk_wednesday_notallow)+'</p></div>';
+	htmlDataTakeAway+='<div class="row_div"><label>Thu</label>   <p class="info_right"> '+checkCloseDate(resData.bk_thursday_start, resData.bk_thursday_end,resData.bk_thursday_notallow)+'</p></div>';
+	htmlDataTakeAway+='<div class="row_div"><label>Fri</label>   <p class="info_right"> '+checkCloseDate(resData.bk_friday_start, resData.bk_friday_end,resData.bk_friday_notallow)+'</p></div>';
+	htmlDataTakeAway+='<div class="row_div"><label>Sat</label>   <p class="info_right"> '+checkCloseDate(resData.bk_saturday_start, resData.bk_saturday_end,resData.bk_saturday_notallow)+'</p></div>';
+	htmlDataTakeAway+='<div class="row_div"><label>Sun</label>   <p class="info_right"> '+checkCloseDate(resData.bk_sunday_start, resData.bk_sunday_end,resData.bk_sunday_notallow)+'</p></div>';
+					
+	$('#BreakOpeningHoursDiv').html(htmlDataTakeAway);		
+	} else {
+		$('#bkfstId').show();
+		$('#BreakOpeningHoursDiv').show();
+	}
+
+	if(sittingStaArr[1]==0) {
+	// Delivery box
+	$('#lunchId').html('<h2>Dinein Hours ('+sittingArr[1]+')</h2>');
+	htmlDatadelivery='<div class="row_div"><label>Mon</label>   <p class="info_right"> '+checkCloseDate(resData.lun_monday_start, resData.lun_monday_end,resData.lun_monday_notallow)+' </p></div>';
+	htmlDatadelivery+='<div class="row_div"><label>Tue </label>   <p class="info_right"> '+checkCloseDate(resData.lun_tuesday_start, resData.lun_tuesday_end,resData.lun_tuesday_notallow)+'</p></div>';
+	htmlDatadelivery+='<div class="row_div"><label>Wed</label>   <p class="info_right"> '+checkCloseDate(resData.lun_wednesday_start, resData.lun_wednesday_end,resData.lun_wednesday_notallow)+'</p></div>';
+	htmlDatadelivery+='<div class="row_div"><label>Thu</label>   <p class="info_right"> '+checkCloseDate(resData.lun_thursday_start, resData.lun_thursday_end,resData.lun_thursday_notallow)+'</p></div>';
+	htmlDatadelivery+='<div class="row_div"><label>Fri</label>   <p class="info_right"> '+checkCloseDate(resData.lun_friday_start, resData.lun_friday_end,resData.lun_friday_notallow)+'</p></div>';
+	htmlDatadelivery+='<div class="row_div"><label>Sat</label>   <p class="info_right"> '+checkCloseDate(resData.lun_saturday_start, resData.lun_saturday_end,resData.lun_saturday_notallow)+'</p></div>';
+	htmlDatadelivery+='<div class="row_div"><label>Sun</label>   <p class="info_right"> '+checkCloseDate(resData.lun_sunday_start, resData.lun_sunday_end,resData.lun_sunday_notallow)+'</p></div>';
+					
+	$('#LunchOpeningHoursDiv').html(htmlDatadelivery);	
+	} else {
+		$('#lunchId').show();
+		$('#LunchOpeningHoursDiv').show();
+	}
+
+	if(sittingStaArr[2]==0) {
+
+	// Delivery box
+	$('#dineId').html('<h2>Dinein Hours ('+sittingArr[2]+')</h2>');
+	htmlDatadelivery='<div class="row_div"><label>Mon</label>   <p class="info_right"> '+checkCloseDate(resData.dinner_monday_start, resData.dinner_monday_end,resData.dinner_monday_notallow)+' </p></div>';
+	htmlDatadelivery+='<div class="row_div"><label>Tue </label>   <p class="info_right"> '+checkCloseDate(resData.dinner_tuesday_start, resData.dinner_tuesday_end,resData.dinner_tuesday_notallow)+'</p></div>';
+	htmlDatadelivery+='<div class="row_div"><label>Wed</label>   <p class="info_right"> '+checkCloseDate(resData.dinner_wednesday_start, resData.dinner_wednesday_end,resData.dinner_wednesday_notallow)+'</p></div>';
+	htmlDatadelivery+='<div class="row_div"><label>Thu</label>   <p class="info_right"> '+checkCloseDate(resData.dinner_thursday_start, resData.dinner_thursday_end,resData.dinner_thursday_notallow)+'</p></div>';
+	htmlDatadelivery+='<div class="row_div"><label>Fri</label>   <p class="info_right"> '+checkCloseDate(resData.dinner_friday_start, resData.dinner_friday_end,resData.dinner_friday_notallow)+'</p></div>';
+	htmlDatadelivery+='<div class="row_div"><label>Sat</label>   <p class="info_right"> '+checkCloseDate(resData.dinner_saturday_start, resData.dinner_saturday_end,resData.dinner_saturday_notallow)+'</p></div>';
+	htmlDatadelivery+='<div class="row_div"><label>Sun</label>   <p class="info_right"> '+checkCloseDate(resData.dinner_sunday_start, resData.dinner_sunday_end,resData.dinner_sunday_notallow)+'</p></div>';
+					
+	$('#DinnerOpeningHoursDiv').html(htmlDatadelivery);	
+
+	} else {
+		$('#dineId').show();
+		$('#DinnerOpeningHoursDiv').show();
+	}
+/*} else {
+	if(sittingStaArr[0]==0) {
+
+	$('#bkfstId').html('<h2>Opening Hours</h2>');
+
+	htmlDataTakeAway='<div class="row_div"><label>Mon </label>   <p class="info_right"> Closed </p></div>';
+	htmlDataTakeAway+='<div class="row_div"><label>Tue </label>   <p class="info_right"> 5:30 - 9:30 </p></div>';
+	htmlDataTakeAway+='<div class="row_div"><label>Wed</label>   <p class="info_right"> 5:30 - 9:30</p></div>';
+	htmlDataTakeAway+='<div class="row_div"><label>Thu</label>   <p class="info_right"> 11:30 - 2:30 / 5:30 - 9:30 </p></div>';
+	htmlDataTakeAway+='<div class="row_div"><label>Fri</label>   <p class="info_right"> 11:30 - 2:30 / 5:30 - 10:00</p></div>';
+	htmlDataTakeAway+='<div class="row_div"><label>Sat</label>   <p class="info_right"> 11:30 - 2:30 / 5:30 - 10:00</p></div>';
+	htmlDataTakeAway+='<div class="row_div"><label>Sun</label>   <p class="info_right"> 11:30 - 2:30 / 5:30 - 9:30</p></div>';
+					
+	$('#BreakOpeningHoursDiv').html(htmlDataTakeAway);		
+	} else {
+		$('#bkfstId').hide();
+		$('#BreakOpeningHoursDiv').hide();
+	}
+}*/
+headerHtml('');
 
 function checkCloseDate(str,end,na) {
 	if(na==0) {

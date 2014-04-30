@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="_assets/css/jqm-demos.css">
      <link rel="stylesheet" href="css/slider_banner.css" />
 
-
+<link rel="stylesheet" href="css/themes/default/fonts.css" />
 
 
 	<script src="js/jquery.js"></script>
@@ -75,15 +75,15 @@
 		<!-- content -->
 		<div class="ui-content" role="main" >
 		
-			<div id="orderDetList" class="order_confirm"></div>
-				
-				<a href="restaurant_details.html" class="ui-btn  ui-btngrey" rel="external">Direction to Store</a>
-				<a href="showMenu.html" class="ui-btn  ui-btngreen" id="placOtheOrdId"  rel="external">Place Another Order</a>
-						
-			<div id="pizzalist" style="margin-top:30px">
-				<ul id="orderList" data-role="listview"  class="ui-listview"></ul>
-			</div>
+			<div class="confirmation ">
+				<div id="orderDetList" class="order_confirm"></div>
+					
+							
+				<div id="pizzalist">
+					<ul id="orderList" data-role="listview"  class="ui-listview"></ul>
+				</div>
 		
+			</div>
 		</div>
 		<!-- /content -->
 
@@ -91,16 +91,7 @@
 	<!-- /page -->
   
 	<!-- footer -->
-	<div data-role="footer" data-position="fixed" data-theme="a">
-		
-		<div class="ui-grid-c center" style="text-align:center;">
-			<div class="ui-block-a"><a href="home.html" rel="external"  class="ui-shadow ui-btn ui-corner-all ui-icon-home ui-btn-icon-notext ui-btn-inline">Button</a></div>
-			<div class="ui-block-b"><a href="info.html" rel="external" class="ui-shadow ui-btn ui-corner-all ui-icon-arrow-l ui-btn-icon-notext ui-icon-info">Button</a></div>
-			<div class="ui-block-c"><a class="ui-shadow ui-btn ui-corner-all ui-icon-grid ui-btn-icon-notext ui-icon-phone">Button</a></div>
-			<div class="ui-block-d"><a href="myaccount.html" rel="external" class="ui-shadow ui-btn ui-corner-all ui-icon-arrow-r ui-btn-icon-notext ui-icon-user">Button</a></div>
-		</div>
-
-	</div>
+	<div data-role="footer" data-position="fixed" data-theme="a" id="footerDiv"></div>
 	<!-- /footer -->
 <!--<script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>

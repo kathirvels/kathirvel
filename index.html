@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="_assets/css/jqm-demos.css">
      <link rel="stylesheet" href="css/slider_banner.css" />
 
-
+<link rel="stylesheet" href="css/themes/default/fonts.css" />
 
 
 	<script src="js/jquery.js"></script>
@@ -44,17 +44,21 @@
 		
 		
 
-		// You can also use "$(window).load(function() {"
-		$(function () {		
-		  // Slideshow 4
-		  $("#slider4").responsiveSlides({
-			auto: true,
-			pager: false,
-			nav: true,
-			speed: 500,
-			namespace: "callbacks"      		
-		  });
-		});
+		 // You can also use "$(window).load(function() {"
+		   $( document ).ready(function() {	
+				//alert("test");
+			  // Slideshow 4
+			   setTimeout(function () {
+				  $("#slider4").responsiveSlides({
+					auto: true,
+					pager: false,
+					nav: true,
+					speed: 500,	
+					timeout: 3000,		
+					namespace: "callbacks"      		
+				  });
+				 }, 3000);
+		   });
 
   
 		
@@ -63,23 +67,29 @@
     <script type="text/javascript" src="js/responsiveslides.min.js"></script>
     
    
-</head>
-
-<body id="bodyId">
+</head><body id="bodyId">
 	<!-- Header -->
 	<div data-role="header" id="headerContId" data-position="fixed" data-theme="a"></div>  
 	<!-- /Header -->
 	
 	<!-- page -->
-	<div data-role="page"  >
+	<div data-role="page" >
 		<!-- content -->
-		<div class="ui-content" role="main" >
+		<div class="ui-content menu_wrap" role="main" >
+			<div id="pageLoader" class="ui-loader ui-loader-verbose">		
+				<img src="img/loader.gif" /> <span>Loading....	</span>	
+				</div>
 			<form>
-				<ul data-role="listview"  data-inset="true" data-theme="c">
-					<li><b>Restaurant Locations</b></li>
-					<li style="height:130px;"><div id="resLocationId" style="text-align:center;margin-top:50px;"></div></li>
-				</ul>		
+				<div id="resLocationId" style="text-align:center;margin-top:10px;"></div>	
 			</form>
+			<!--<div class="callbacks_container" id="dealDivId">
+				<ul class="rslides" id="slider4">
+				   
+				</ul>
+			</div>		
+			<div class="clearfix"></div>
+			<div id="employeeList"></div>-->
+			<div id="homeDashId" ></div>
 		</div>
 		<!-- /content -->
 
@@ -87,18 +97,9 @@
 	<!-- /page -->
   
 	<!-- footer -->
-	<div data-role="footer" data-position="fixed" data-theme="a">
-		
-		<div class="ui-grid-c center" style="text-align:center;">
-			<div class="ui-block-a"><a href="home.html" rel="external"  class="ui-shadow ui-btn ui-corner-all ui-icon-home ui-btn-icon-notext ui-btn-inline">Button</a></div>
-			<div class="ui-block-b"><a href="info.html" rel="external" class="ui-shadow ui-btn ui-corner-all ui-icon-arrow-l ui-btn-icon-notext ui-icon-info">Button</a></div>
-			<div class="ui-block-c"><a class="ui-shadow ui-btn ui-corner-all ui-icon-grid ui-btn-icon-notext ui-icon-phone">Button</a></div>
-			<div class="ui-block-d"><a href="myaccount.html" rel="external" class="ui-shadow ui-btn ui-corner-all ui-icon-arrow-r ui-btn-icon-notext ui-icon-user">Button</a></div>
-		</div>
-
-	</div>
+	<div data-role="footer" data-position="fixed" data-theme="a" id="footerDiv"></div>
 	<!-- /footer -->
-
+	
 <!-- /Typography 
 <script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
@@ -107,6 +108,6 @@
 
 <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.0rc1.min.js"></script>-->
 <script type="text/javascript" charset="utf-8" src="js/common.js"></script>
-<script type="text/javascript" charset="utf-8" src="js/appconfig.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/home.js"></script>
 </body>
-</html>
+</html>  

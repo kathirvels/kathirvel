@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Reservation</title>
+	<link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+	<link rel="stylesheet" href="css/themes/default/jquery.mobile-1.4.0.css">
+    <link rel="stylesheet" href="css/theme-classic/theme-classic.css">
+	<link rel="stylesheet" href="_assets/css/jqm-demos.css">
+     <link rel="stylesheet" href="css/slider_banner.css" />
+
+	<link rel="stylesheet" href="css/themes/default/fonts.css" />
+
+
+	<script src="js/jquery.js"></script>
+	<script src="_assets/js/index.js1"></script>
+	<script src="js/jquery.mobile-1.4.0.min.js"></script>
+	<script src="js/functions.js"></script>
+	
+	<!-- Date Picker -->
+
+	<script type="text/javascript" language="JavaScript" src="js/cal/cal.js"></script>
+	<link rel="StyleSheet" type="text/css" href="css/cal/calendar.css" media="screen">
+	
+	<script>
+		$(function() {
+			$( "[data-role='navbar']" ).navbar();
+			$( "[data-role='header'], [data-role='footer']" ).toolbar();
+		});
+		
+		// Update the contents of the toolbars
+		$( document ).on( "pageshow", "[data-role='page']", function() {
+			// Each of the four pages in this demo has a data-title attribute
+			// which value is equal to the text of the nav button
+			// For example, on first page: <div data-role="page" data-title="Info">
+			var current = $( this ).jqmData( "title" );
+			// Change the heading
+			$( "[data-role='header'] h1" ).text( current );
+			// Remove active class from nav buttons
+			$( "[data-role='navbar'] a.ui-btn-active" ).removeClass( "ui-btn-active" );
+			// Add active class to current nav button
+			$( "[data-role='navbar'] a" ).each(function() {
+				if ( $( this ).text() === current ) {
+					$( this ).addClass( "ui-btn-active" );
+				}
+			});
+			$(".ui-input-text").removeClass("ui-corner-all");
+			$(".ui-checkbox label").removeClass("ui-corner-all");			
+			$("#num_guest_online-button").removeClass("ui-corner-all");			
+			$("#num_guest_online-button").css("float","right");
+			$("#num_guest_online-button").addClass("drop_res");
+			$("#seating-button").removeClass("ui-corner-all");
+			$("#timediv-button").removeClass("ui-corner-all");
+			$("#timediv-button").addClass("drop_res");
+			$("#timediv-button,#num_guest_online-button,#dateDrop-button").removeClass("ui-btn-icon-right");
+			$("#dateDrop-button").removeClass("ui-corner-all");
+			$("#dateDrop-button").addClass("drop_date");
+			$("#registerFrmId .ui-select").css({"margin-bottom":"0"});
+			$("#seating-button .ui-select").css({"margin-top":"0.5em"});
+			$("#dropDateId .ui-select").css({"margin-top":"0"});
+			$("#registerFrmId .ui-select #timediv-button").css({"border-width":"0"});
+			$("#registerFrmId .ui-select #num_guest_online-button").css({"border-width":"0"});
+			//$("#registerFrmId #seating-button span").css({"height":"30","display":"block","line-height":"30px"});
+			//$("#registerFrmId #dateDrop-button span").css({"color":"black","font-size":"16px","font-weight":"bold"});
+			$("#seatingDrop").css({"margin-bottom":"20px"});
+			$("#registerFrmId #seating-button ").addClass("hour_sche");
+		});
+		
+		
+		
+
+		// You can also use "$(window).load(function() {"
+		$(function () {		
+		  // Slideshow 4
+		  $("#slider4").responsiveSlides({
+			auto: true,
+			pager: false,
+			nav: true,
+			speed: 500,
+			namespace: "callbacks"      		
+		  });
+		});
+
+  
+		
+	</script>
+    
+    <script type="text/javascript" src="js/responsiveslides.min.js"></script>
+    
+   
+</head>
+
+<body id="bodyId">
+	<!-- Header -->
+	<div data-role="header" id="headerContId" data-position="fixed" data-theme="a"></div>  
+	<!-- /Header -->
+	
+	<!-- page -->
+	<div data-role="page"  >
+		<!-- content -->
+		<div class="ui-content" role="main" >
+			<div class="terms" style="background:none">
+				<div id="pageLoader" class="ui-loader ui-loader-verbose">		
+				<img src="img/loader.gif" /> <span>Loading....	</span>	
+				</div>
+				<form id="registerFrmId" style="display:block" onsubmit="return false;">
+				<div class="left_nav" onclick="dateChange('Prev')"><a href="#"><img src="images/left_nav.jpg" alt=""></a></div>
+                <div class="right_nav" onclick="dateChange('Next')"><a href="#"><img src="images/right_nav.jpg" alt=""></a></div>
+                
+                <div class="calen_tab"  id="dropDateId" style="display:none;">            
+				 <select id="dateDrop" name="dateDrop" onchange="setDateHidden(this.value)"></select>                 
+				</div>
+               
+                
+				<div class="calen_tab" onmouseover="showDateDrop('in');"   id="dropHtmlDateId">            
+				  <p style="font-size:26px; color:#000; font-family: 'gothic'; margin:0 0 0 0!important; padding:10px 0 0 0!important; text-align:center;" id='dateP'></p>
+				  <p style="font-size:16px; color:#F60; text-transform:uppercase; font-family: 'gothic'; margin:5px 0 0 0!important; padding:0!important; text-align:center;" id='dayP'></p>                
+				</div>
+				<div class="clearfix"></div>				
+            
+			
+				<input type="hidden" id="booking_date" name="booking_date" class="one" required>
+				<div id="seatingDrop" onmouseout="showDateDrop('out');">
+				  <select id="seating" name="seating" data-shadow="false" onChange="loadtimediv('drop')" >
+			      </select>
+                 
+				</div>
+				<input type="hidden" name="seating_text" id="seating_text" value="">
+				
+				<select id="num_guest_online" name="num_guest_online" data-shadow="false" ></select>
+                
+				<select id="timediv" style="background-image:none;" name="timediv" data-shadow="false"  onChange="changecolor(this.value)" 	>
+				  <option value="SA">
+                  Select
+                  </option>
+                
+				  </select>
+              <div class="clearfix" style="width:100%;">
+                <a href="javascript:void(0)" class="ui-btn arrival-time" style="cursor:context-menu!important;"><span>ARRIVAL TIME</span></a>
+                <a class="ui-btn guset-no" style="cursor:context-menu!important;"><span>GUESTS</span></a>
+            </div>
+                  
+				<input type="text" id="comments" name="comments" required value="Additional Requests" onfocus="OnFocusName1('comments','Additional Requests',this.value)" onblur="OnBlurName1('comments','Additional Requests',this.value)">	
+				
+				 
+				<input type="hidden" name="time_validate" readonly id="time_validate" value="">			
+				<input type="hidden" id="user_id" name="user_id" readonly>
+				<div class="getdirect white-btn">
+					<a href="#" id="bookingButtonId" data-role="button" data-theme="c" class="ui-btn">Book Now</a>
+				 </div>
+				</form>   
+			</div>
+            
+		</div>
+		<!-- /content -->
+
+	</div>
+	<!-- /page -->
+  
+	<!-- footer -->
+	<div data-role="footer" data-position="fixed" data-theme="a" id="footerDiv"></div>
+	<!-- /footer -->
+
+<!--<script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.0rc1.min.js"></script>-->
+<script type="text/javascript" charset="utf-8" src="js/common.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/dinein.js"></script>
+</body>
+</html>

@@ -2,15 +2,21 @@ if(dataAppConfig==null || userData==null) {
 	window.location.href='index.html';
 }
 if(orderId!=null) {
+	if(bokord==null) {
+		headerHtml('Confirmation');	
+	} else {
+		headerHtml('Order Details');	
+	}
 	$('#orderList').hide();
 	showOrderinfo();
 }else{
+	headerHtml('Order History');	
 	$('#placOtheOrdId').hide();
 	$('#orderDetList').hide();
 	getOrderList();
 }
 
-function getOrderList() {	
+function getOrderList() {		
 	var store = 'Mw';
 	var order_id = null;
 	var user_id = userData.user_data.userid;
@@ -22,7 +28,7 @@ function getOrderList() {
 		//alert(orderDets);
 		$.each(orderDets, function(index, item) {
 			
-			$('#orderList').append('<li><a class="ui-btn ui-btn-icon-right ui-icon-carat-r" href="order_info.html?orderId='+item.order_id+'"  rel="external">'+(index+1)+'. Order Id:'+item.order_id+' Amount:'+item.total_amount+' Delivery Time:'+item.delivery_time+'</a></li>');
+			$('#orderList').append('<li><a class="ui-btn ui-btn-icon-right ui-icon-carat-r" href="order_info.html?orderId='+item.order_id+'&bokord=view"  rel="external">'+(index+1)+'. Order Id:'+item.order_id+' Amount:'+item.total_amount+' Delivery Time:'+item.delivery_time+'</a></li>');
 		}); 
 		//$('#orderList').listview('refresh');
 	});
@@ -38,17 +44,45 @@ function showOrderinfo() {
 		//alert(resData.restaurant_name);
 		var orderDets = data.order;
 		$.each(orderDets, function(index, item) {
-				htmlData='<h4>Your order has been confirmed, details are below:</h4>';
-				htmlData+='<div style="margin:20px 0 0 0;">';
-				htmlData+='<h4>Order Number: '+item.order_id+'<h4></div>';    
-				htmlData+='<p class="itemp">Meal Ready Time: '+item.delivery_time+'</p>';
-				htmlData+='<div style="margin:20px 0;"><h4 class="itemp">Cost: $ '+item.gross_total+'</h4>';
-				htmlData+='<h4 class="itemp">Payment Status: <span>'+item.payment_status+'</span></h4>';    
+				if(bokord==null) {
+					htmlData='<h2>Your order has been confirmed, details are below:</h2>';
+				} else {
+					htmlData='<h2>Your order details</h2>';
+				}
+				htmlData+=' <div class="clearfix infowarps">';
+				
+				
+				htmlData+='<div class="row_div"><label>Confirm No </label>';
+				htmlData+='<p class="info_right">'+item.order_id+'</p></div>';    
+				
+				htmlData+='<div class="row_div"><label>Meal Ready Time </label>';
+				htmlData+='<p class="info_right">'+item.delivery_time+'</p></div>';    
+				
+				htmlData+='<div class="row_div"><label>Cost </label>';
+				htmlData+='<p class="info_right">$ '+item.gross_total+'</p></div>';    
+				
+				
+				
 				htmlData+='</div>';
-			
-				htmlData+='<div style="margin:20px 0;">';
-				htmlData+='<h4 class="itemp">Store Name: '+dataAppConfig.AppConfig.store_name+'</h4>';  
-				htmlData+='<h4 class="itemp">Store Address: '+resData.restaurant_name+'('+resData.restaurant_location+'), '+resData.address_line1+', '+resData.address_line2+', '+resData.phone+', '+resData.suburb+', '+resData.state+' - '+resData.postcode+'</h4>';  
+				
+				htmlData+=' <div class="clearfix infowarps">';
+				
+				//htmlData+='<h2>'+resData.restaurant_name+'</h2>';  
+				
+				htmlData+='<div class="row_div"><h2>Location</h2></div>';
+				htmlData+='<div class="row_div"><label>Address </label>';
+				htmlData+='<p class="info_right">';
+				htmlData+=resData.address_line1+'<br>  '+(resData.address_line2!="" ? resData.address_line2+'<br>' :"")+resData.suburb+'<br> '+resData.state+' <br> '+resData.postcode; 
+				htmlData+='</p></div>';
+				
+				htmlData+='<div class="row_div"><label>Phone </label>  ';           
+						   htmlData+='<p class="info_right"> '+resData.phone+'</p></div> ';
+				
+				
+				htmlData+='<div class="row_div getdirect" >';
+					htmlData+='<a href="restaurant_details.html" id="restMap" class="ui-btn" style="background: none repeat scroll 0 0 #00AB21;color:#fff" rel="external">Get Directions</a>';
+				htmlData+='</div>';
+				
 				htmlData+='</div>';
 				//htmlData+='<div class="clearfix"><a class="ui-lfloat ui-btn ui-btn-corner-all ui-shadow ui-btn-up-a" data-theme="a" rel="external" data-role="button" id="storeDirection" href=""><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Directions to store</span></span></a>        	</div>';
 			

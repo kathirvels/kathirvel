@@ -1,7 +1,16 @@
 if(dataAppConfig==null) {
 	window.location.href='index.html';
 }
+// disabled all the top navaigation 
+$("#loginBtnId").show();	
+$("#signupBtnId").show();	
+$("#addrBtnId").show();	
+
+$("#loginBtnId").addClass('menuleft');	
+$("#signupBtnId").addClass('menuright');	
+
 $("#loginBtnId").click(function() {
+	headerHtml('Login');	
 	$("#loginFrmId").show();
 	$("#registerFrmId").hide();	
 	$("#addrFrmId").hide();
@@ -10,6 +19,11 @@ $("#loginBtnId").click(function() {
 });
 
 $("#signupBtnId").click(function() {
+	if(form_active_url==null) {
+		headerHtml('Register');	
+	} else {
+		headerHtml('Account Details');
+	}
 	$("#registerFrmId").show();
 	$("#loginFrmId").hide();	
 	$("#addrFrmId").hide();
@@ -21,6 +35,7 @@ $("#signupBtnId").click(function() {
 });
 
 $("#addrBtnId").click(function() {
+	headerHtml('Billing Address');	
 	$("#addrFrmId").show();
 	$("#registerFrmId").hide();	
 	$("#loginFrmId").hide();	
@@ -32,25 +47,41 @@ $("#addrBtnId").click(function() {
 });
 
 var formActive=window.localStorage.getItem('form_active');
-
+var form_active_url = getUrlVars()["form_active"];
 //var formInActive=window.localStorage.getItem('form_inactive');
-if(formActive==null) {	
+//alert(formInActive);
+if(formActive==null && form_active_url==null) {	
 	$("#addrBtnId").hide();
 	$("#logoutBtnId").hide();
 	$("#userName").hide();
 	$('#loginFrmId').show();
+	headerHtml('Login');	
 } else {	
 	if(userData==null) {
+		if(form_active_url==null) {
+			headerHtml('Login');
+		}
 		$("#addrBtnId").hide();
 		$("#userName").hide();
 		$("#logoutBtnId").hide();
 		$(formActive).show();
 	} else {		
+		//headerHtml('Login');
 		$("#loginBtnId").hide();	
-		var form_active_url = getUrlVars()["form_active"];
+	
+		$("#signupBtnId").removeClass('menuright');	
+		$("#signupBtnId").addClass('menuleft');	
+		$("#addrBtnId").addClass('menuright');	
+		
+		
 		if(form_active_url!=null) {
 			showPrevValue(form_active_url);
 			$('#'+form_active_url).show();
+			if(form_active_url=='registerFrmId') {
+				headerHtml('Account Details');
+			} else {
+				headerHtml('Billing Details');
+			}
 		} else {
 			showPrevValue(formActive);
 			$(formActive).show();
@@ -62,9 +93,11 @@ if(formActive==null) {
 $("#pageLoader").hide();	
 
 // Register Post	
-$("#sinupButtonId").click(function() {
-	$("#pageLoader").show();
-	$('#registerFrmId').submit();
+$("#sinupButtonId").click(function() {	
+	if(userValidate()==true) {
+		$("#pageLoader").show();
+		$('#registerFrmId').submit();
+	}
 });
 
 $('#registerFrmId').submit(function(){		
@@ -72,10 +105,10 @@ $('#registerFrmId').submit(function(){
 	//alert(serviceURL+'register_post');
 	$.ajax({
 		type: 'POST',
-		data: postData+'&store_id=Mw',
+		data: postData+'&store_id='+store_id+'&restaurant_id='+restId,
 		url: serviceURL+'register',
 		success: function(data){
-			//alert(data);
+			//alert(JSON.stringify(data));
 			if(data.response == 1) {
 				window.localStorage.setItem('userData',JSON.stringify(data));
 				console.log(data);
@@ -87,6 +120,11 @@ $('#registerFrmId').submit(function(){
 				window.localStorage.setItem('userData',JSON.stringify(data));
 				console.log(data);
 				alert("User Updated Successfully");
+				$("#pageLoader").hide();
+			}else if(data.response == 3) {
+				window.localStorage.setItem('userData',JSON.stringify(data));
+				console.log(data);
+				alert("You are not changed any user information");
 				$("#pageLoader").hide();
 			}else{
 				console.log(data);				
@@ -115,9 +153,10 @@ $('#loginFrmId').submit(function(){
 	//alert(postData);
 	$.ajax({
 		type: 'POST',
-		data: postData+'&store_id=Mw',
+		data: postData+'&store_id='+store_id+'&restaurant_id='+restId,
 		url: serviceURL+'login',
-		success: function(data){			
+		success: function(data){	
+			//alert(JSON.stringify(data));
 			if(data.response==1) {
 				window.localStorage.setItem('userData',JSON.stringify(data)); // store local storage
 				console.log(data);
@@ -145,8 +184,10 @@ $('#loginFrmId').submit(function(){
 
 // Address Post	
 $("#addrButtonId").click(function() {
-	$("#pageLoader").show();
-	$('#addrFrmId').submit();
+	if(addrValidate()==true) {
+		$("#pageLoader").show();
+		$('#addrFrmId').submit();
+	}
 });
 
 $('#addrFrmId').submit(function(){		
@@ -154,7 +195,7 @@ $('#addrFrmId').submit(function(){
 	//alert(postData);
 	$.ajax({
 		type: 'POST',
-		data: postData+'&store_id=Mw',
+		data: postData+'&store_id='+store_id,
 		url: serviceURL+'updateaddress',
 		success: function(data){
 			window.localStorage.setItem('userData',JSON.stringify(data));
@@ -179,15 +220,76 @@ function showPrevValue(formName){
 		$('#user_id').val(userData.user_data.userid);
 		$('#fname').val(userData.user_data.fname);
 		$('#lname').val(userData.user_data.lname);
-		$('#email').val(userData.user_data.email);
-		$('#email').attr('readonly', true);
-		$('#phone').val(userData.addr_data.phone);
+		$('#email_reg').val(userData.user_data.email);
+		$('#old_email').val(userData.user_data.email);
+		//$('#email_reg').attr('readonly', true);
+		$('#mobile').val(userData.addr_data.mobile);
 	} else if(formName=="addrFrmId" || formName=="#addrFrmId") {
 		$('#add_user_id').val(userData.user_data.userid);
-		$('#street_number').val(userData.addr_data.address);
-		$('#street_name').val(userData.addr_data.street);
-		$('#suburb').val(userData.addr_data.city);
-		$('#postcode').val(userData.addr_data.post_code);	
+		$('#street_number').val(userData.addr_data.address!=""? userData.addr_data.address : "Street Number");
+		$('#street_name').val(userData.addr_data.street!=""? userData.addr_data.street : "Street Name");
+		$('#suburb').val(userData.addr_data.city!=""? userData.addr_data.city : "Suburp");
+		$('#postcode').val(userData.addr_data.post_code!=""? userData.addr_data.post_code : "Postcode");	
 	}
 	
+}
+
+
+function userValidate() {
+	
+	var error = new Array();
+	var errorMessage = "";
+	var frm = document.registerFrmId;	
+	
+	error[0] = nameCheck(frm.fname.value,'First Name') ? "" : "Please provide valid First Name";
+	error[1] = nameCheck(frm.lname.value,'Surname') ? "" :  "Please provide valid Surname";
+	error[2] = phoneCheck(frm.mobile.value,'Mobile Number') ? "" :  "Please provide valid Mobile Number";
+	error[3] = checkText(frm.email,'Email') ? "" :  "Email Address is empty!";
+	if(error[3]=="") {
+		error[3]=emailCheck(frm.email.value) ? "" : "Please provide valid E-mail Address";	
+	}
+	/*if( $('#termLiId').is(':visible') ) {
+		if(frm.term.checked == false) {
+				error[4] = "Accept Terms and Conditions!";
+		}
+	}*/
+			
+	
+	
+	for(var i= 0 ;i<error.length; ++i)
+		if(error[i]!=undefined)
+			errorMessage+= error[i] != "" ? " * " +error[i]+"\n" : "";
+
+		if(errorMessage == "") {			
+			return true;
+		} else {
+			alert(errorMessage);
+			return false;
+		}
+
+}
+
+
+function addrValidate() {
+	
+	var error = new Array();
+	var errorMessage = "";
+	var frmAdd = document.addrFrmId;	
+	
+	error[0] = checkText(frmAdd.street_number,'Street Number') ? "" : "Street Number is Empty";
+	error[1] = checkText(frmAdd.street_name,'Street Name') ? "" :  "Street Name is Empty";
+	error[2] = checkText(frmAdd.suburb,'Suburb') ? "" :  "Suburb is Empty";
+	error[3] = checkText(frmAdd.postcode,'Postcode') ? "" :  "Postcode is empty";
+	
+	for(var i= 0 ;i<error.length; ++i)
+		if(error[i]!=undefined)
+			errorMessage+= error[i] != "" ? " * " +error[i]+"\n" : "";
+
+		if(errorMessage == "") {			
+			return true;
+		} else {
+			alert(errorMessage);
+			return false;
+		}
+
 }
